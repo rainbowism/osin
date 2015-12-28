@@ -29,11 +29,12 @@ func OutputJSON(rs *Response, w http.ResponseWriter, r *http.Request) error {
 		}
 		w.WriteHeader(rs.StatusCode)
 
-		encoder := json.NewEncoder(w)
-		err := encoder.Encode(rs.Output)
+		data, err := json.MarshalIndent(rs.Output, "", "\t")
 		if err != nil {
 			return err
 		}
+		data = append(data, '\n')
+		w.Write(data)
 	}
 	return nil
 }
